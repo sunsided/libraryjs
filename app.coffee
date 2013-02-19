@@ -77,6 +77,7 @@ app.configure('development', ->
 # configure the controllers
 [
 	'site',
+	'login',
 	'errors'
 ].map (controllerName) ->
 	controller = require ('./controllers/' + controllerName)

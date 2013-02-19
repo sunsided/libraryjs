@@ -12,8 +12,6 @@
  Licence is distributed on an “AS IS” basis, without warranties or conditions of any kind.
 ###
 
-passport = require('passport')
-
 exports.SiteController = class SiteController
 	###
 	constructor: (@name) ->
@@ -27,62 +25,9 @@ exports.SiteController = class SiteController
 		res.status(200)
 			.render('index.jade', variables);
 
-	showLogin: (req, res) ->
-		variables = {
-		title: 'Express',
-		username: '',
-		token: req.session._csrf,
-		message: req.flash('error')
-		}
-		res.status(200)
-			.render('login.jade', variables);
-
-	performLogin: (req, res) ->
-		variables = {
-		title: 'Express ... welp',
-		username: req.body.user,
-		token: req.session._csrf,
-		}
-		res.status(200)
-			.render('login.jade', variables);
-
 exports.setup = (app) ->
 	controller = new exports.SiteController
-
-	# configure passport
-	LocalStrategy = require('passport-local').Strategy;
-
-	passport.use(new LocalStrategy(
-		(username, password, done) ->
-			console.warn("sunside was here #{username}:#{password}");
-			return done(null, false, { message: 'Incorrect username.' })
-			###
-			User.findOne({ username: username }, (err, user) ->
-				if (err)
-					return done(err)
-
-				if (!user)
-					return done(null, false, { message: 'Incorrect username.' })
-
-				if (!user.validPassword(password))
-					return done(null, false, { message: 'Incorrect password.' })
-
-				return done(null, user);
-			);
-			###
-	));
 
 	# Routes
 	route = '/'
 	app.get route, controller.index
-
-	route = '/login'
-	app.get route, controller.showLogin
-	#app.post route, controller.performLogin
-	app.post(route, passport.authenticate('local',
-		{
-			successRedirect: '/',
-			failureRedirect: '/login',
-			failureFlash: true
-		}
-	));
