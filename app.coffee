@@ -52,6 +52,12 @@ app.set('port', nconf.get('server:port'))
 	.use(express.cookieParser(nconf.get('cookies:secret')))
 	.use(express.session({ secret: nconf.get('session:secret')}))
 	.use(flash())
+	###
+	.use((req, res, next) ->
+		res.locals.flash = () -> return req.flash();
+		next();
+	)
+	###
 	.use(passport.initialize())
 	.use(passport.session())
 	.use(express.csrf())
