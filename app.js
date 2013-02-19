@@ -21,12 +21,28 @@ var express = require('express')
     , user = require('./routes/user')
     , http = require('http')
     , path = require('path')
-    , stylus = require('stylus');
+    , stylus = require('stylus')
+    , nconf = require('nconf');
 
+// load configuration
+nconf.env()
+    .file('user', 'config.json')
+    .file('defaults', 'config.defaults');
+
+if (nconf.get('session:secret') == "your secret here") {
+    console.warn('Your session secret has not been changed from the default value. Please check your configuratrion.');
+}
+
+if (nconf.get('cookies:secret') == "your secret here") {
+    console.warn('Your cookie secret has not been changed from the default value. Please check your configuration.');
+}
+
+// create app
 var app = express();
 
 // configure the app
-app.set('port', process.env.PORT || 3000);
+app.set('port', nconf.get('server:port'));
+app.set('domain', nconf.get('server:domain'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -35,8 +51,8 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session({ secret: "shhhhhhhhh!"}));
+app.use(express.cookieParser(nconf.get('cookies:secret')));
+app.use(express.session({ secret: nconf.get('session:secret')}));
 app.use(express.csrf());
 app.use(app.router);
 app.use(stylus.middleware({
@@ -62,6 +78,6 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 // start the server
-http.createServer(app).listen(app.get('port'), function(){
-    console.log("Express server listening on port " + app.get('port'));
+http.createServer(app).listen(app.get('port'), app.get('domain'), function(){
+    console.log("Express server listening on " + app.get('domain') + ":" + app.get('port'));
 });

@@ -1,0 +1,12 @@
+{
+    "server": {
+        "port": 3000,
+        "domain": "127.0.0.1"
+    },
+    "session": {
+        "secret": "your secret here"
+    },
+    "cookies": {
+        "secret": "your secret here"
+    }
+}
