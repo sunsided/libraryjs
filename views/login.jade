@@ -3,13 +3,15 @@ extends layout
 block content
   h1 Whoopsie!
   p Please log in to your account.
+  -if(message)
+    #info= message
   div
     form(action='/login',method='post')
       input(name='_csrf',type='hidden',value="#{token}")
       div(data-role='fieldcontain')
         fieldset(data-role='controlgroup')
           label(for='user') user
-             input(id='user',type='text',value='#{username}',placeholder='',name='user')
+             input(id='user',type='text',value='#{username}',placeholder='',name='username')
       div#passworddiv(data-role='fieldcontain')
         fieldset(data-role='controlgroup')
           label(for='password') password

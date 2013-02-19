@@ -16,6 +16,7 @@
 Module dependencies.
 ###
 
+flash = require('connect-flash')
 express = require('express')
 http = require('http')
 path = require('path')
@@ -50,8 +51,9 @@ app.set('port', nconf.get('server:port'))
 	.use(express.methodOverride())
 	.use(express.cookieParser(nconf.get('cookies:secret')))
 	.use(express.session({ secret: nconf.get('session:secret')}))
-	#.use(passport.initialize())
-	#.use(passport.session())
+	.use(flash())
+	.use(passport.initialize())
+	.use(passport.session())
 	.use(express.csrf())
 	.use(stylus.middleware({
 	    src: path.join(__dirname, 'public'),
@@ -71,27 +73,6 @@ app.configure('development', ->
     app.locals({pretty: true})
     # app.use(express.errorHandler())
 );
-
-# configure passport
-###
-LocalStrategy = require('passport-local').Strategy;
-
-passport.use(new LocalStrategy(
-	(username, password, done) ->
-		User.findOne({ username: username }, (err, user) ->
-			if (err)
-				return done(err)
-
-			if (!user)
-				return done(null, false, { message: 'Incorrect username.' })
-
-			if (!user.validPassword(password))
-				return done(null, false, { message: 'Incorrect password.' })
-
-			return done(null, user);
-		);
-	));
-###
 
 # configure the controllers
 [
