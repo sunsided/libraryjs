@@ -66,7 +66,7 @@ app.set('port', nconf.get('server:port'))
 # configure the middlewares for development
 app.configure('development', ->
     app.locals({pretty: true})
-    app.use(express.errorHandler())
+    # app.use(express.errorHandler())
 );
 
 # configure the controllers

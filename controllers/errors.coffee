@@ -18,7 +18,8 @@ exports.ErrorsController = class ErrorsController
 
 	showError: (req, res) ->
 		errorId = (Number) req.params.errorId
-		console.log("switching error #{errorId}");
+		# console.log("switching error #{errorId}");
+
 		switch errorId
 			when 404
 				throw new NotFound
