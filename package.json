@@ -5,7 +5,7 @@
     "version": "0.0.1-SNAPSHOT",
     "private": true,
     "scripts": {
-        "start": "node app"
+        "start": "coffee app"
     },
     "repository": {
         "type": "git",
@@ -20,7 +20,8 @@
         "express": "3.1.x",
         "jade": "*",
         "stylus": "*",
-        "nconf": "0.6.x"
+        "nconf": "0.6.x",
+        "coffee-script": "1.4.x"
     },
     "license": "EUPL v1.1",
     "engines": {

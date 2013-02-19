@@ -1,7 +1,7 @@
 # library.js
 
 library.js is a web-based ebook management service in development that strives to be a better alternative to the
-web server embedded in [Calibre](http://calibre-ebook.com/). It is implemented in JavaScript for [node](http://nodejs.org).
+web server embedded in [Calibre](http://calibre-ebook.com/). It is implemented in [CoffeeScript](http://coffeescript.org) for [node](http://nodejs.org).
 
 ## License
 
