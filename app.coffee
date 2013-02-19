@@ -17,8 +17,6 @@ Module dependencies.
 ###
 
 express = require('express')
-routes = require('./routes')
-user = require('./routes/user')
 http = require('http')
 path = require('path')
 stylus = require('stylus')
@@ -52,7 +50,6 @@ app.set('port', nconf.get('server:port'))
 	.use(express.cookieParser(nconf.get('cookies:secret')))
 	.use(express.session({ secret: nconf.get('session:secret')}))
 	.use(express.csrf())
-	.use(app.router)
 	.use(stylus.middleware({
 	    src: path.join(__dirname, 'public'),
 	    compile: (str, path) ->
@@ -64,6 +61,7 @@ app.set('port', nconf.get('server:port'))
 	            .set('linenos', verbose)
 	    }))
 	.use(express.static(path.join(__dirname, 'public')))
+	.use(app.router)
 
 # configure the middlewares for development
 app.configure('development', ->
@@ -71,9 +69,13 @@ app.configure('development', ->
     app.use(express.errorHandler())
 );
 
-# configure the routes
-app.get('/', routes.index)
-app.get('/users', user.list)
+# configure the controllers
+[
+	'site',
+	'errors'
+].map (controllerName) ->
+	controller = require ('./controllers/' + controllerName)
+	controller.setup app
 
 # start the server
 http.createServer(app).listen(app.get('port'), app.get('domain'), ->

@@ -13,9 +13,22 @@
 ###
 
 
-###
- GET users listing.
-###
+exports.SiteController = class SiteController
+	###
+	constructor: (@name) ->
+		undefined
+	###
 
-exports.list = (req, res) ->
-	res.send("respond with a resource");
+	index: (req, res) ->
+		variables = {
+		title: 'Express',
+		}
+		res.status(200)
+			.render('index.jade', variables)
+
+exports.setup = (app) ->
+	controller = new exports.SiteController
+
+	# Routes
+	route = '/'
+	app.get route, controller.index

@@ -12,10 +12,8 @@
  Licence is distributed on an “AS IS” basis, without warranties or conditions of any kind.
 ###
 
-
-###
- GET home page.
-###
-
-exports.index = (req, res) ->
-	res.render('index', { title: 'Express' })
+exports.NotFound = (msg) ->
+	this.name = 'NotNound'
+	Error.call(this, msg)
+	Error.captureStackTrace(this, arguments.callee)
+	return
