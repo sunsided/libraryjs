@@ -24,7 +24,26 @@ exports.SiteController = class SiteController
 		title: 'Express',
 		}
 		res.status(200)
-			.render('index.jade', variables)
+			.render('index.jade', variables);
+
+	showLogin: (req, res) ->
+		variables = {
+		title: 'Express',
+		username: '',
+		token: req.session._csrf,
+		}
+		res.status(200)
+			.render('login.jade', variables);
+
+	performLogin: (req, res) ->
+		console.log(req.body.user);
+		variables = {
+		title: 'Express ... welp',
+		username: req.body.user,
+		token: req.session._csrf,
+		}
+		res.status(200)
+			.render('login.jade', variables);
 
 exports.setup = (app) ->
 	controller = new exports.SiteController
@@ -32,3 +51,7 @@ exports.setup = (app) ->
 	# Routes
 	route = '/'
 	app.get route, controller.index
+
+	route = '/login'
+	app.get route, controller.showLogin
+	app.post route, controller.performLogin
