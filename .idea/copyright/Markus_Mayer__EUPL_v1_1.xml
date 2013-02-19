@@ -1,0 +1,9 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="&amp;#36;project.name&#13;&#10;Copyright © &amp;#36;file.lastModified.year Markus Mayer &lt;widemeadows@gmail.com&gt;.&#13;&#10;&#13;&#10;This source code is licensed under the EUPL, Version 1.1 or - as soon they will be approved&#13;&#10;by the European Commission - subsequent versions of the EUPL (the &quot;Licence&quot;); you may not&#13;&#10;use this work except in compliance with the Licence. You may obtain a copy of the Licence at:&#13;&#10;&lt;http://joinup.ec.europa.eu/software/page/eupl/licence-eupl&gt;&#13;&#10;&#13;&#10;A copy is also distributed with this source code.&#13;&#10;Unless required by applicable law or agreed to in writing, software distributed under the&#13;&#10;Licence is distributed on an “AS IS” basis, without warranties or conditions of any kind." />
+    <option name="keyword" value="Copyright" />
+    <option name="allowReplaceKeyword" value="" />
+    <option name="myName" value="Markus Mayer, EUPL v1.1" />
+    <option name="myLocal" value="true" />
+  </copyright>
+</component>
