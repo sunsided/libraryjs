@@ -74,7 +74,7 @@ exports.setup = (app) ->
       successRedirect: '/',
       failureRedirect: '/login',
       failureFlash: true,
-      badRequestMessage: 'trololo',
+      badRequestMessage: 'Username and password required.',
       session: true
     })
 
