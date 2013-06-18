@@ -24,7 +24,8 @@
         "coffee-script": "*",
         "passport": ">= 0.1",
         "passport-local": ">= 0.1",
-        "connect-flash": "*"
+        "connect-flash": "*",
+        "connect-ensure-login": "*"
     },
     "license": "EUPL v1.1",
     "engines": {

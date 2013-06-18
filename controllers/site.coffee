@@ -12,6 +12,8 @@
  Licence is distributed on an “AS IS” basis, without warranties or conditions of any kind.
 ###
 
+ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn
+
 exports.SiteController = class SiteController
   ###
   constructor: (@name) ->
@@ -31,4 +33,4 @@ exports.setup = (app) ->
 
   # Routes
   route = '/'
-  app.get route, controller.index
+  app.get route, ensureLoggedIn('/login'), controller.index
