@@ -2,3 +2,4 @@
 .idea/workspace.xml
 /config.json/*.js
 /npm-debug.log
+/config.json

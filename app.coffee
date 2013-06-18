@@ -30,7 +30,7 @@ nconf.env()
     .file('defaults', 'config.defaults');
 
 if (nconf.get('session:secret') == "your secret here")
-    console.warn('Your session secret has not been changed from the default value. Please check your configuratrion.');
+    console.warn('Your session secret has not been changed from the default value. Please check your configuration.');
 
 
 if (nconf.get('cookies:secret') == "your secret here")
@@ -41,53 +41,47 @@ app = express()
 
 # configure the app
 app.set('port', nconf.get('server:port'))
-	.set('domain', nconf.get('server:domain'))
-	.set('views', path.join(__dirname, 'views'))
-	.set('view engine', 'jade')
+  .set('domain', nconf.get('server:domain'))
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'jade')
 # configure the middlewares
-	.use(express.favicon())
-	.use(express.logger('dev'))
-	.use(express.bodyParser())
-	.use(express.methodOverride())
-	.use(express.cookieParser(nconf.get('cookies:secret')))
-	.use(express.session({ secret: nconf.get('session:secret')}))
-	.use(flash())
-	###
-	.use((req, res, next) ->
-		res.locals.flash = () -> return req.flash();
-		next();
-	)
-	###
-	.use(passport.initialize())
-	.use(passport.session())
-	.use(express.csrf())
-	.use(stylus.middleware({
-	    src: path.join(__dirname, 'public'),
-	    compile: (str, path) ->
-	        verbose = app.get("env") == "development"
-	        return stylus(str)
-	            .set('filename', path)
-	            .set('compress', true)
-	            .set('warn', verbose)
-	            .set('linenos', verbose)
-	    }))
-	.use(express.static(path.join(__dirname, 'public')))
-	.use(app.router)
+  .use(express.favicon())
+  .use(express.logger('dev'))
+  .use(express.bodyParser())
+  .use(express.methodOverride())
+  .use(express.cookieParser(nconf.get('cookies:secret')))
+  .use(express.session({ secret: nconf.get('session:secret')}))
+  .use(flash())
+  .use(passport.initialize())
+  .use(passport.session())
+  .use(express.csrf())
+  .use(stylus.middleware({
+      src: path.join(__dirname, 'public'),
+      compile: (str, path) ->
+          verbose = app.get("env") == "development"
+          return stylus(str)
+              .set('filename', path)
+              .set('compress', true)
+              .set('warn', verbose)
+              .set('linenos', verbose)
+      }))
+  .use(express.static(path.join(__dirname, 'public')))
+  .use(app.router)
 
 # configure the middlewares for development
 app.configure('development', ->
     app.locals({pretty: true})
-    # app.use(express.errorHandler())
+    app.use(express.errorHandler())
 );
 
 # configure the controllers
 [
-	'site',
-	'login',
-	'errors'
+  'site',
+  'login',
+  'errors'
 ].map (controllerName) ->
-	controller = require ('./controllers/' + controllerName)
-	controller.setup app
+  controller = require ('./controllers/' + controllerName)
+  controller.setup app
 
 # start the server
 http.createServer(app).listen(app.get('port'), app.get('domain'), ->

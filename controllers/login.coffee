@@ -13,62 +13,67 @@
 ###
 
 passport = require('passport')
+LocalStrategy = require('passport-local').Strategy
 
 exports.LoginController = class LoginController
-	showLogin: (req, res) ->
-		variables = {
-		title: 'Express',
-		username: '',
-		token: req.session._csrf,
-		message: req.flash('error')
-		}
-		res.status(200)
-			.render('login.jade', variables);
+  showLogin: (req, res) ->
+    variables = {
+    title: 'Express',
+    username: '',
+    token: req.session._csrf,
+    message: req.flash('error')
+    }
+    res.status(200)
+      .render('login.jade', variables);
 
-	###
-	performLogin: (req, res) ->
-		variables = {
-		title: 'Express ... welp',
-		username: req.body.user,
-		token: req.session._csrf,
-		}
-		res.status(200)
-			.render('login.jade', variables);
-	###
+  ###
+  performLogin: (req, res) ->
+    variables = {
+    title: 'Express ... welp',
+    username: req.body.user,
+    token: req.session._csrf,
+    }
+    res.status(200)
+      .render('login.jade', variables);
+  ###
 
 exports.setup = (app) ->
-	controller = new exports.LoginController
+  controller = new exports.LoginController
 
-	# configure passport
-	LocalStrategy = require('passport-local').Strategy;
+  passport.serializeUser (user, done) ->
+    done null, user.id
 
-	passport.use(new LocalStrategy(
-		(username, password, done) ->
-			return done(null, false, { message: 'Incorrect username.' })
-			###
-			User.findOne({ username: username }, (err, user) ->
-				if (err)
-					return done(err)
+  passport.deserializeUser (id, done) ->
+    ###
+    User.findById id, (err, user) ->
+      done(err, user)
+    ###
+    if id is 1
+      done null, { id: 1, login: "foo", statement: "roflcopter" }
 
-				if (!user)
-					return done(null, false, { message: 'Incorrect username.' })
+    done { message: 'Unknown user.' }, null
 
-				if (!user.validPassword(password))
-					return done(null, false, { message: 'Incorrect password.' })
+  # configure passport strategy
+  strategy = new LocalStrategy((username, password, done) ->
+    if username != "foo"
+      return done null, false, { message: 'Incorrect username.' }
 
-				return done(null, user);
-			);
-			###
-	));
+    if password != "bar"
+      return done null, false, { message: 'Incorrect password.' }
 
-	# Routes
-	route = '/login'
-	app.get route, controller.showLogin
-	app.post(route, passport.authenticate('local',
-		{
-			successRedirect: '/',
-			failureRedirect: '/login',
-			failureFlash: true,
-			badRequestMessage: 'trololo'
-		}
-	));
+    return done null, { id: 1, login: username, statement: "roflcopter" }
+  )
+
+  passport.use strategy
+
+  # Routes
+  route = '/login'
+  app.get route, controller.showLogin
+  app.post route, passport.authenticate('local',
+    {
+      successRedirect: '/',
+      failureRedirect: '/login',
+      failureFlash: true,
+      badRequestMessage: 'trololo'
+    })
+
