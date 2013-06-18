@@ -56,10 +56,10 @@ exports.setup = (app) ->
   # configure passport strategy
   strategy = new LocalStrategy((username, password, done) ->
     if username != "foo"
-      return done null, false, { message: 'Incorrect username.' }
+      return done null, false, { message: 'Incorrect username. Try "foo".' }
 
     if password != "bar"
-      return done null, false, { message: 'Incorrect password.' }
+      return done null, false, { message: 'Incorrect password. Try "bar".' }
 
     return done null, { id: 1, login: username, statement: "roflcopter" }
   )
