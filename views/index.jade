@@ -7,3 +7,5 @@ block content
     | Your
     a(href="/login") authentication
     |  status is <code>#{authenticated}</code>
+  if authenticated
+    p User user data is <code>#{user}</code>

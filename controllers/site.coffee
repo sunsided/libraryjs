@@ -23,7 +23,8 @@ exports.SiteController = class SiteController
   index: (req, res) ->
     variables = {
       title: 'Express',
-      authenticated: req.isAuthenticated()
+      authenticated: req.isAuthenticated(),
+      user: JSON.stringify(req.user)
     }
     res.status(200)
       .render('index.jade', variables);
