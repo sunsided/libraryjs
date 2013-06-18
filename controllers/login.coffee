@@ -49,9 +49,9 @@ exports.setup = (app) ->
       done(err, user)
     ###
     if id is 1
-      done null, { id: 1, login: "foo", statement: "roflcopter" }
+      return done null, { id: 1, login: "foo", statement: "roflcopter" }
 
-    done { message: 'Unknown user.' }, null
+    return done { message: 'Unknown user.' }, null
 
   # configure passport strategy
   strategy = new LocalStrategy((username, password, done) ->
@@ -74,6 +74,7 @@ exports.setup = (app) ->
       successRedirect: '/',
       failureRedirect: '/login',
       failureFlash: true,
-      badRequestMessage: 'trololo'
+      badRequestMessage: 'trololo',
+      session: true
     })
 
