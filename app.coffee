@@ -24,11 +24,12 @@ stylus = require 'stylus'
 nconf = require 'nconf'
 passport = require 'passport'
 mongoose = require 'mongoose'
+fs = require 'fs'
 
 # load configuration
 nconf.env()
     .file('user', 'config.json')
-    .file('defaults', 'config.defaults');
+    .file('defaults', 'config.defaults')
 
 if (nconf.get('session:secret') == "your secret here")
     console.warn('Your session secret has not been changed from the default value. Please check your configuration.');
@@ -38,9 +39,16 @@ if (nconf.get('cookies:secret') == "your secret here")
     console.warn('Your cookie secret has not been changed from the default value. Please check your configuration.');
 
 # connect mongodb
+console.log 'Connecting to mongodb.'
 mongoose.connect 'mongodb://' + nconf.get('mongodb:host') + ':' + nconf.get('mongodb:port') + '/' + nconf.get('mongodb:database')
 
+# load mongoose models
+console.log 'Loading model definitions.'
+fs.readdirSync('./models').forEach (file) ->
+  require './models/' + file
+
 # create app
+console.log 'Configuring express.'
 app = express()
 
 # configure the app
