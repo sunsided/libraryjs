@@ -40,11 +40,9 @@ if (nconf.get('cookies:secret') == "your secret here")
 
 # connect mongodb
 console.log 'Connecting to mongodb.'
-mongoose.connect nconf.get('mongodb:connection'), (err) ->
-  if err
-    console.error 'Failed to connect to mongodb at ' + nconf.get('mongodb:connection')
-    throw err
-  else
+db = mongoose.createConnection nconf.get('mongodb:connection')
+db.on 'error', console.error.bind(console, 'connection error:')
+db.on 'connected', () ->
     console.log 'Successfully connected to mongodb.'
 
     {Author} = require('./models/Author')
