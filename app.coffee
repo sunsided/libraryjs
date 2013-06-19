@@ -41,9 +41,25 @@ if (nconf.get('cookies:secret') == "your secret here")
 # connect mongodb
 console.log 'Connecting to mongodb.'
 mongoose.connect nconf.get('mongodb:connection'), (err) ->
-  if (err)
+  if err
     console.error 'Failed to connect to mongodb at ' + nconf.get('mongodb:connection')
     throw err
+  else
+    console.log 'Successfully connected to mongodb.'
+
+    {Author} = require('./models/Author')
+    Author.findOne (err, authors) ->
+      if err
+        console.error 'An error occured while querying the authors database'
+        throw err
+
+      # Add an author if none exists
+      if !authors
+        console.log 'Created test author.'
+        author = new Author({ _id: 42, name: 'Douglas Adams'})
+        author.save()
+      else
+        console.dir authors
 
 # load mongoose models
 console.log 'Loading model definitions.'
