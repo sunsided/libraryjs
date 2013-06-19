@@ -38,30 +38,30 @@ if (nconf.get('session:secret') == "your secret here")
 if (nconf.get('cookies:secret') == "your secret here")
     console.warn('Your cookie secret has not been changed from the default value. Please check your configuration.');
 
+# load mongoose models
+console.log 'Loading model definitions.'
+require './models'
+
 # connect mongodb
 console.log 'Connecting to mongodb.'
 db = mongoose.createConnection nconf.get('mongodb:connection')
 db.on 'error', console.error.bind(console, 'connection error:')
 db.on 'connected', () ->
-    console.log 'Successfully connected to mongodb.'
+  console.log 'Successfully connected to mongodb.'
 
-    {Author} = require('./models/Author')
-    Author.findOne (err, authors) ->
-      if err
-        console.error 'An error occured while querying the authors database'
-        throw err
+  Author = db.model('Author')
+  Author.findOne (err, authors) ->
+    if err
+      console.error 'An error occured while querying the authors database'
+      throw err
 
-      # Add an author if none exists
-      if !authors
-        console.log 'Created test author.'
-        author = new Author({ _id: 42, name: 'Douglas Adams'})
-        author.save()
-      else
-        console.dir authors
-
-# load mongoose models
-console.log 'Loading model definitions.'
-require './models'
+    # Add an author if none exists
+    if !authors
+      console.log 'Created test author.'
+      author = new Author({ _id: 42, name: 'Douglas Adams'})
+      author.save()
+    else
+      console.dir authors
 
 # create app
 console.log 'Configuring express.'
