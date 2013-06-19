@@ -40,7 +40,10 @@ if (nconf.get('cookies:secret') == "your secret here")
 
 # connect mongodb
 console.log 'Connecting to mongodb.'
-mongoose.connect 'mongodb://' + nconf.get('mongodb:host') + ':' + nconf.get('mongodb:port') + '/' + nconf.get('mongodb:database')
+mongoose.connect nconf.get('mongodb:connection'), (err) ->
+  if (err)
+    console.error 'Failed to connect to mongodb at ' + nconf.get('mongodb:connection')
+    throw err
 
 # load mongoose models
 console.log 'Loading model definitions.'

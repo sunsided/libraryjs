@@ -10,8 +10,6 @@
         "secret": "your secret here"
     },
     "mongodb": {
-        "host": "localhost",
-        "port": 27017,
-        "database": "libraryjs"
+        "connection": "mongodb://localhost/libraryjs"
     }
 }
