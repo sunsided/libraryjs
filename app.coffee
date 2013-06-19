@@ -16,13 +16,14 @@
 Module dependencies.
 ###
 
-flash = require('connect-flash')
-express = require('express')
-http = require('http')
-path = require('path')
-stylus = require('stylus')
-nconf = require('nconf')
-passport = require('passport')
+flash = require 'connect-flash'
+express = require 'express'
+http = require 'http'
+path = require 'path'
+stylus = require 'stylus'
+nconf = require 'nconf'
+passport = require 'passport'
+mongoose = require 'mongoose'
 
 # load configuration
 nconf.env()
@@ -35,6 +36,9 @@ if (nconf.get('session:secret') == "your secret here")
 
 if (nconf.get('cookies:secret') == "your secret here")
     console.warn('Your cookie secret has not been changed from the default value. Please check your configuration.');
+
+# connect mongodb
+mongoose.connect 'mongodb://' + nconf.get('mongodb:host') + ':' + nconf.get('mongodb:port') + '/' + nconf.get('mongodb:database')
 
 # create app
 app = express()

@@ -9,4 +9,9 @@
     "cookies": {
         "secret": "your secret here"
     }
+    "mongodb" {
+        "host": "localhost",
+        "port": 27017,
+        "database": "libraryjs"
+    }
 }
