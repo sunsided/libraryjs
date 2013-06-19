@@ -35,7 +35,7 @@ bookSchema = Schema(
   ]
 
   # Cover image path
-  cover: {String, trim: true}
+  cover: { type: String, trim: true }
 
   # Additional files (e.g. CD files, ...)
   attachments: [
