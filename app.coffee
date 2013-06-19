@@ -63,8 +63,7 @@ mongoose.connect nconf.get('mongodb:connection'), (err) ->
 
 # load mongoose models
 console.log 'Loading model definitions.'
-fs.readdirSync('./models').forEach (file) ->
-  require './models/' + file
+require './models'
 
 # create app
 console.log 'Configuring express.'
